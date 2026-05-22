@@ -1,0 +1,36 @@
+id: CIS-SVC-2.1.4
+
+title: Ensure TFTP server is not enabled
+
+severity: High
+
+risk_score: 8
+
+category: Services
+
+compliance:
+  - CIS 2.1.4
+
+description: >
+  TFTP server should not be enabled.
+
+impact: >
+  TFTP lacks authentication and encryption.
+
+check:
+  type: regex
+  target: enabled_services
+  pattern: 'tftp'
+
+remediation: |
+  Run:
+
+  systemctl disable tftp.socket
+  systemctl stop tftp.socket
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - tftp
+  - services

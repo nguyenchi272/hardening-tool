@@ -1,0 +1,35 @@
+id: CIS-SSH-5.2.16
+
+title: Ensure weak SSH MACs are disabled
+
+severity: High
+
+risk_score: 8
+
+category: SSH Hardening
+
+compliance:
+  - CIS 5.2.16
+
+description: >
+  Weak SSH MAC algorithms should be disabled.
+
+impact: >
+  Weak MACs reduce SSH integrity protection.
+
+check:
+  type: regex
+  target: sshd_config
+  pattern: 'hmac-md5|hmac-sha1-96'
+
+remediation: |
+  Remove weak MACs from:
+
+  /etc/ssh/sshd_config
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - ssh
+  - crypto

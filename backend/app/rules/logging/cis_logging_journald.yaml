@@ -1,0 +1,35 @@
+id: CIS-LOG-4.2.2
+
+title: Ensure journald is enabled
+
+severity: Medium
+
+risk_score: 5
+
+category: Audit & Logging
+
+compliance:
+  - CIS 4.2.2
+
+description: >
+  journald should be enabled.
+
+impact: >
+  Missing journald reduces local event visibility.
+
+check:
+  type: regex_not_match
+  target: journald
+  pattern: '^enabled$'
+
+remediation: |
+  Run:
+
+  systemctl enable systemd-journald
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - journald
+  - logging

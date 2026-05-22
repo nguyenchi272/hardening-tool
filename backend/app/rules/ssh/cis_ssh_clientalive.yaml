@@ -1,0 +1,38 @@
+id: CIS-SSH-5.2.14
+
+title: Ensure ClientAliveInterval is configured
+
+severity: Medium
+
+risk_score: 5
+
+category: SSH Hardening
+
+compliance:
+  - CIS 5.2.14
+
+description: >
+  SSH idle timeout should be configured.
+
+impact: >
+  Idle sessions increase unauthorized access risk.
+
+check:
+  type: regex_not_match
+  target: sshd_config
+ pattern: '^ClientAliveInterval\s+300'
+
+remediation: |
+  Edit:
+
+  /etc/ssh/sshd_config
+
+  Set:
+  ClientAliveInterval 300
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - ssh
+  - session

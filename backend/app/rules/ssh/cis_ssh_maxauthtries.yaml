@@ -1,0 +1,38 @@
+id: CIS-SSH-5.2.12
+
+title: Ensure MaxAuthTries is configured
+
+severity: High
+
+risk_score: 8
+
+category: SSH Hardening
+
+compliance:
+  - CIS 5.2.12
+
+description: >
+  SSH MaxAuthTries should be 4 or less.
+
+impact: >
+  Unlimited login attempts increase brute-force risk.
+
+check:
+  type: regex_not_match
+  target: sshd_config
+  pattern: '^MaxAuthTries\s+[1-4]'
+
+remediation: |
+  Edit:
+
+  /etc/ssh/sshd_config
+
+  Set:
+  MaxAuthTries 4
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - ssh
+  - brute-force

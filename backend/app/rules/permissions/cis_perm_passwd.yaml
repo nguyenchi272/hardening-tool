@@ -1,0 +1,35 @@
+id: CIS-PERM-6.1.1
+
+title: Ensure permissions on /etc/passwd are configured
+
+severity: Medium
+
+risk_score: 5
+
+category: File Permissions
+
+compliance:
+  - CIS 6.1.1
+
+description: >
+  /etc/passwd permissions should be 644 or more restrictive.
+
+impact: >
+  Incorrect permissions may expose sensitive account data.
+
+check:
+  type: regex_not_match
+  target: passwd_perm
+  pattern: '^644$'
+
+remediation: |
+  Run:
+
+  chmod 644 /etc/passwd
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - permissions
+  - passwd

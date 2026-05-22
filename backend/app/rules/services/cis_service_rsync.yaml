@@ -1,0 +1,36 @@
+id: CIS-SVC-2.1.5
+
+title: Ensure rsync daemon is not enabled
+
+severity: Medium
+
+risk_score: 6
+
+category: Services
+
+compliance:
+  - CIS 2.1.5
+
+description: >
+  rsync daemon should not run unless required.
+
+impact: >
+  Exposed rsync services may leak sensitive data.
+
+check:
+  type: regex
+  target: enabled_services
+  pattern: 'rsyncd'
+
+remediation: |
+  Run:
+
+  systemctl disable rsyncd
+  systemctl stop rsyncd
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - rsync
+  - services

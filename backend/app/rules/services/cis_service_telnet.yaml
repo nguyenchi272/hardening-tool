@@ -1,0 +1,37 @@
+id: CIS-SVC-2.1.1
+
+title: Ensure telnet server is not enabled
+
+severity: Critical
+
+risk_score: 9
+
+category: Services
+
+compliance:
+  - CIS 2.1.1
+
+description: >
+  Telnet server should not be enabled.
+
+impact: >
+  Telnet transmits credentials in plaintext.
+
+check:
+  type: regex
+  target: enabled_services
+  pattern: 'telnet'
+
+remediation: |
+  Run:
+
+  systemctl disable telnet.socket
+  systemctl stop telnet.socket
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - services
+  - telnet
+  - insecure

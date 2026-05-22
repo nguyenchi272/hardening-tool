@@ -1,0 +1,35 @@
+id: CIS-SSH-5.2.15
+
+title: Ensure weak SSH ciphers are disabled
+
+severity: High
+
+risk_score: 8
+
+category: SSH Hardening
+
+compliance:
+  - CIS 5.2.15
+
+description: >
+  Weak SSH ciphers should not be used.
+
+impact: >
+  Weak ciphers may allow traffic decryption.
+
+check:
+  type: regex
+  target: sshd_config
+  pattern: '3des|cbc|arcfour'
+
+remediation: |
+  Remove weak ciphers from:
+
+  /etc/ssh/sshd_config
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - ssh
+  - crypto

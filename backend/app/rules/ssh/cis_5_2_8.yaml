@@ -1,0 +1,38 @@
+id: OL8-SSH-001
+
+title: Disable root SSH login
+
+severity: High
+
+risk_score: 8
+
+category: SSH
+
+compliance:
+  - CIS 5.2.8
+
+description: >
+  Root SSH login should be disabled.
+
+impact: >
+  Attackers may brute force the root account.
+
+check:
+  type: regex_not_match
+  target: sshd_config
+  pattern: '^\s*PermitRootLogin\s+no'
+
+expected: not_found
+
+remediation: |
+  Edit /etc/ssh/sshd_config
+
+  Set:
+  PermitRootLogin no
+
+references:
+  - CIS Oracle Linux 8 Benchmark
+
+tags:
+  - ssh
+  - authentication

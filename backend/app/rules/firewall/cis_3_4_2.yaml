@@ -1,0 +1,36 @@
+id: CIS-FW-3.4.2
+
+title: Ensure firewalld is enabled
+
+severity: High
+
+risk_score: 7
+
+category: Firewall
+
+compliance:
+  - CIS 3.4.2
+
+description: >
+  firewalld service should be active.
+
+impact: >
+  Missing firewall exposes network services.
+
+check:
+  type: equals
+  target: firewalld
+  expected_value: active
+
+remediation: |
+  Run:
+
+  systemctl enable firewalld
+  systemctl start firewalld
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - firewall
+  - network

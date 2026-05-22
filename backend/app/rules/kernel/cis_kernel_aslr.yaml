@@ -1,0 +1,38 @@
+id: CIS-KERNEL-1.5.1
+
+title: Ensure ASLR is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Kernel Hardening
+
+compliance:
+  - CIS 1.5.1
+
+description: >
+  Address Space Layout Randomization should be enabled.
+
+impact: >
+  Disabled ASLR weakens memory corruption protection.
+
+check:
+  type: regex_not_match
+  target: sysctl
+  pattern: 'kernel.randomize_va_space = 2'
+
+remediation: |
+  Edit:
+
+  /etc/sysctl.conf
+
+  Set:
+  kernel.randomize_va_space = 2
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - kernel
+  - memory

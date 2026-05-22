@@ -1,0 +1,36 @@
+id: CIS-LOG-4.1.1
+
+title: Ensure auditd is enabled
+
+severity: Critical
+
+risk_score: 9
+
+category: Audit & Logging
+
+compliance:
+  - CIS 4.1.1
+
+description: >
+  auditd service should be enabled.
+
+impact: >
+  Missing audit logs reduce visibility into security events.
+
+check:
+  type: regex_not_match
+  target: auditd
+  pattern: '^active$'
+
+remediation: |
+  Run:
+
+  systemctl enable auditd
+  systemctl start auditd
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - audit
+  - logging

@@ -1,0 +1,38 @@
+id: CIS-PASS-5.4.1
+
+title: Ensure password minimum length
+
+severity: High
+
+risk_score: 7
+
+category: Password Policy
+
+compliance:
+  - CIS 5.4.1
+
+description: >
+  Password minimum length should be 14 or more.
+
+impact: >
+  Weak passwords increase brute-force risk.
+
+check:
+  type: regex_not_match
+  target: pwquality
+  pattern: 'minlen\s*=\s*1[4-9]'
+
+remediation: |
+  Edit:
+
+  /etc/security/pwquality.conf
+
+  Set:
+  minlen = 14
+
+references:
+  - CIS RHEL 8 Benchmark
+
+tags:
+  - password
+  - authentication
