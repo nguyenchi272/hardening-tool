@@ -28,6 +28,10 @@ remediation: |
   systemctl enable firewalld
   systemctl start firewalld
 
+fix:
+  - systemctl enable firewalld
+  - systemctl start firewalld
+
 references:
   - CIS RHEL 8 Benchmark
 

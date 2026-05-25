@@ -27,6 +27,11 @@ remediation: |
 
   /etc/ssh/sshd_config
 
+fix:
+  - sed -i '/MACs/d' /etc/ssh/sshd_config
+  - echo 'MACs hmac-sha2-512,hmac-sha2-256' >> /etc/ssh/sshd_config
+  - systemctl restart sshd
+
 references:
   - CIS RHEL 8 Benchmark
 

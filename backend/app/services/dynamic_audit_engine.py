@@ -145,8 +145,12 @@ class DynamicAuditEngine:
                         tags=
                             rule["tags"],
 
-                        server=
-                            data["hostname"],
+                        server=data.get(
+                            "hostname",
+                            data.get("host", "unknown")
+                        ),
+                        
+                        host=data["host"],
 
                         status="Open"
                     )

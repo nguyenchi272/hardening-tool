@@ -30,6 +30,10 @@ remediation: |
   Set:
   MaxAuthTries 4
 
+fix:
+  - grep -q '^MaxAuthTries' /etc/ssh/sshd_config && sed -i 's/^MaxAuthTries.*/MaxAuthTries 4/' /etc/ssh/sshd_config || echo 'MaxAuthTries 4' >> /etc/ssh/sshd_config
+  - systemctl restart sshd
+
 references:
   - CIS RHEL 8 Benchmark
 

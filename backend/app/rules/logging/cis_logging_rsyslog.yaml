@@ -28,6 +28,10 @@ remediation: |
   systemctl enable rsyslog
   systemctl start rsyslog
 
+fix:
+  - systemctl enable rsyslog
+  - systemctl start rsyslog
+
 references:
   - CIS RHEL 8 Benchmark
 

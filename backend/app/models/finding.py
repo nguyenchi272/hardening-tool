@@ -33,4 +33,6 @@ class Finding(BaseModel):
 
     server: str
 
+    host: str
+
     status: str

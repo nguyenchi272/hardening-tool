@@ -30,6 +30,9 @@ remediation: |
   Set:
   minlen = 14
 
+fix:
+  - grep -q '^minlen' /etc/security/pwquality.conf && sed -i 's/^minlen.*/minlen = 14/' /etc/security/pwquality.conf || echo 'minlen = 14' >> /etc/security/pwquality.conf
+
 references:
   - CIS RHEL 8 Benchmark
 

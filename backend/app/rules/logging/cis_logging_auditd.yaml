@@ -28,6 +28,10 @@ remediation: |
   systemctl enable auditd
   systemctl start auditd
 
+fix:
+  - systemctl enable auditd
+  - systemctl start auditd
+
 references:
   - CIS RHEL 8 Benchmark
 

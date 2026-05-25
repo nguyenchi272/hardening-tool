@@ -40,6 +40,9 @@ from fastapi.responses \
 from app.services.report_service \
     import ReportService
 
+from app.services.remediation_service \
+    import RemediationService
+
 router = APIRouter(
     prefix="/api/v1"
 )
@@ -52,6 +55,15 @@ class ScanRequest(BaseModel):
     username: str
     password: str
 
+class FixRequest(BaseModel):
+
+    host: str
+
+    username: str
+
+    password: str
+
+    finding_id: str
 
 @router.get("/health")
 def health():
@@ -64,7 +76,6 @@ def health():
 def get_findings():
 
     return LATEST_FINDINGS
-
 
 @router.post("/scan")
 def start_scan(
@@ -218,13 +229,25 @@ def dashboard_findings(
 ):
 
     findings = (
-        db.query(FindingRecord)
+        db.query(
+            FindingRecord,
+            Asset.hostname,
+            Asset.ip_address
+        )
+        .join(
+            Scan,
+            FindingRecord.scan_id == Scan.id
+        )
+        .join(
+            Asset,
+            Scan.asset_id == Asset.id
+        )
         .all()
     )
 
     results = []
 
-    for finding in findings:
+    for finding, hostname, ip_address in findings:
 
         results.append({
 
@@ -268,7 +291,10 @@ def dashboard_findings(
                 [],
 
             "server":
-                "Unknown",
+                hostname,
+
+            "ip_address":
+                ip_address,
 
             "status":
                 finding.status
@@ -648,3 +674,22 @@ def export_asset_report(
         filename=
             f"asset_{asset_id}_report.pdf"
     )
+
+@router.post("/fix")
+def fix_finding(
+    payload: FixRequest
+):
+
+    result = \
+        RemediationService().fix_finding(
+
+            payload.host,
+
+            payload.username,
+
+            payload.password,
+
+            payload.finding_id
+        )
+
+    return result

@@ -27,6 +27,10 @@ remediation: |
 
   setenforce 1
 
+fix:
+  - setenforce 1
+  - sed -i 's/^SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
+
 references:
   - CIS RHEL 8 Benchmark
 

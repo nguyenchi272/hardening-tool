@@ -27,6 +27,10 @@ remediation: |
 
   systemctl enable systemd-journald
 
+fix:
+  - systemctl enable systemd-journald
+  - systemctl restart systemd-journald
+
 references:
   - CIS RHEL 8 Benchmark
 

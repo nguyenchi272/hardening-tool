@@ -30,6 +30,10 @@ remediation: |
   Set:
   LoginGraceTime 60
 
+fix:
+  - grep -q '^LoginGraceTime' /etc/ssh/sshd_config && sed -i 's/^LoginGraceTime.*/LoginGraceTime 60/' /etc/ssh/sshd_config || echo 'LoginGraceTime 60' >> /etc/ssh/sshd_config
+  - systemctl restart sshd
+
 references:
   - CIS RHEL 8 Benchmark
 

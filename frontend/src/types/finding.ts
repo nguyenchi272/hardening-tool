@@ -29,5 +29,9 @@ export interface Finding {
 
   server: string
 
+  host: string
+
+  ip_address: string
+
   status: string
 }

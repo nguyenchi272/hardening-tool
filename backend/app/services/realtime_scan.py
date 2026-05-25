@@ -116,11 +116,6 @@ class RealtimeScanService:
 
             raise e
 
-        print(
-            f"{host} findings:",
-            len(findings)
-        )
-
         for finding in findings:
 
             await self.send_finding(

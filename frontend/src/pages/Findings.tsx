@@ -42,7 +42,7 @@ export default function Findings() {
   const [search, setSearch] =
     useState("")
 
-  const [severity, setSeverity] =
+  const [serverFilter, setServerFilter] =
     useState("All")
 
   const [
@@ -65,17 +65,17 @@ export default function Findings() {
                 search.toLowerCase()
               )
 
-          const matchesSeverity =
-            severity === "All"
-            || finding.severity === severity
+          const matchesServer =
+            serverFilter === "All"
+            || finding.server === serverFilter || finding.ip_address === serverFilter
 
           return (
             matchesSearch
-            && matchesSeverity
+            && matchesServer
           )
         }
       )
-    }, [findings, search, severity])
+    }, [findings, search, serverFilter])
 
   const severityStyle = (
     severity: string
@@ -166,9 +166,9 @@ export default function Findings() {
           />
 
           <select
-            value={severity}
+            value={serverFilter}
             onChange={(e) =>
-              setSeverity(
+              setServerFilter(
                 e.target.value
               )
             }
@@ -181,25 +181,33 @@ export default function Findings() {
             "
           >
 
-            <option>
-              All
-            </option>
+          <option value="All">
+            All Servers
+          </option>
 
-            <option>
-              Critical
-            </option>
+          {
+            [...new Set(
+              findings.map((f) => {
 
-            <option>
-              High
-            </option>
+                if (
+                  f.server &&
+                  f.server !== "unknown"
+                ) {
+                  return f.server
+                }
 
-            <option>
-              Medium
-            </option>
+                return f.ip_address
+              })
+            )].map((server) => (
 
-            <option>
-              Low
-            </option>
+              <option
+                key={server}
+                value={server}
+              >
+                {server}
+              </option>
+            ))
+          }
 
           </select>
 

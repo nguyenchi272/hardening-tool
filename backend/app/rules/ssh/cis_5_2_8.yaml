@@ -30,6 +30,10 @@ remediation: |
   Set:
   PermitRootLogin no
 
+fix:
+  - sed -i 's/^#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+  - systemctl restart sshd
+
 references:
   - CIS Oracle Linux 8 Benchmark
 

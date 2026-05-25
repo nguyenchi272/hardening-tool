@@ -20,7 +20,7 @@ impact: >
 check:
   type: regex_not_match
   target: sshd_config
- pattern: '^ClientAliveInterval\s+300'
+  pattern: '^ClientAliveInterval\s+300'
 
 remediation: |
   Edit:
@@ -29,6 +29,10 @@ remediation: |
 
   Set:
   ClientAliveInterval 300
+
+fix:
+  - grep -q '^ClientAliveInterval' /etc/ssh/sshd_config && sed -i 's/^ClientAliveInterval.*/ClientAliveInterval 300/' /etc/ssh/sshd_config || echo 'ClientAliveInterval 300' >> /etc/ssh/sshd_config
+  - systemctl restart sshd
 
 references:
   - CIS RHEL 8 Benchmark

@@ -10,6 +10,7 @@ class LinuxAudit:
         username,
         password
     ):
+        self.host = host
         self.collector = SSHCollector(
             host,
             username,
@@ -21,6 +22,8 @@ class LinuxAudit:
         self.collector.connect()
 
         data = {
+            "host": self.host,
+
             "hostname":
                 self.collector.run_command(
                     "hostname"
