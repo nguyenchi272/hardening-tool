@@ -1,24 +1,28 @@
-# asset.py
-from sqlalchemy \
-    import Column, Integer, String
-from sqlalchemy.orm \
-    import relationship
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey
+)
 
-from app.db.database \
-    import Base
+from sqlalchemy.orm import relationship
+
+from app.db.database import Base
 
 
 class Asset(Base):
 
     __tablename__ = "assets"
-    scans = relationship(
-        "Scan"
-    )
 
     id = Column(
         Integer,
         primary_key=True,
         index=True
+    )
+
+    credential_id = Column(
+        Integer,
+        ForeignKey("credentials.id")
     )
 
     hostname = Column(String)
@@ -28,3 +32,12 @@ class Asset(Base):
     os = Column(String)
 
     status = Column(String)
+
+    scans = relationship(
+        "Scan",
+        back_populates="asset"
+    )
+
+    credential = relationship(
+        "Credential"
+    )

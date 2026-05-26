@@ -10,8 +10,11 @@ from app.db.models.scan \
 from app.db.models.finding \
     import FindingRecord
 
+from app.db.models.credentials import Credential
+
 from app.db.database \
     import Base
+
 
 
 Base.metadata.create_all(
