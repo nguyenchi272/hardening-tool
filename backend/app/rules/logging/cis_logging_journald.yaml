@@ -20,15 +20,14 @@ impact: >
 check:
   type: regex_not_match
   target: journald
-  pattern: '^enabled$'
+  pattern: '^static$'
 
 remediation: |
   Run:
 
-  systemctl enable systemd-journald
+  systemctl start systemd-journald
 
 fix:
-  - systemctl enable systemd-journald
   - systemctl restart systemd-journald
 
 references:

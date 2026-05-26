@@ -32,11 +32,33 @@ class SSHCollector:
             timeout=10
         )
 
-    def run_command(self, command):
+    def run_command(
+        self,
+        command,
+        sudo=False
+    ):
+
+        if sudo:
+
+            command = (
+                f"sudo -S -p '' {command}"
+            )
+
         stdin, stdout, stderr = \
-            self.client.exec_command(command)
+            self.client.exec_command(
+                command
+            )
+
+        if sudo:
+
+            stdin.write(
+                self.password + "\n"
+            )
+
+            stdin.flush()
 
         return {
+
             "stdout":
                 stdout.read().decode(),
 

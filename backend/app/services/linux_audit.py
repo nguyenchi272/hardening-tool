@@ -104,6 +104,11 @@ class LinuxAudit:
                     "stat -c '%a' /etc/gshadow"
                 )["stdout"],
 
+            "crontab_permissions":
+                self.collector.run_command(
+                    "stat -c '%a %U %G' /etc/crontab"
+                )["stdout"],
+
             "world_writable":
                 self.collector.run_command(
                     "find / -xdev -type f -perm -0002 2>/dev/null | head"

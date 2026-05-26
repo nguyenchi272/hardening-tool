@@ -22,7 +22,7 @@ impact: >
 check:
   type: regex_not_match
   target: crontab_permissions
-  pattern: '^-rw-------\.?\s+root\s+root'
+  pattern: '^600 root root$'
 
 expected: secure_permissions
 
