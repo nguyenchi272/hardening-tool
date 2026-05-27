@@ -18,6 +18,7 @@ def dashboard_findings(
     findings = (
         db.query(
             FindingRecord,
+            Asset.id,
             Asset.hostname,
             Asset.ip_address
         )
@@ -34,12 +35,15 @@ def dashboard_findings(
 
     results = []
 
-    for finding, hostname, ip_address in findings:
+    for finding, asset_id, hostname, ip_address in findings:
 
         results.append({
 
             "id":
                 str(finding.id),
+
+            "asset_id":
+                asset_id,
 
             "finding_id":
                 finding.finding_id,

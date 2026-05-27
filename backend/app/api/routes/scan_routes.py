@@ -1,6 +1,18 @@
 from fastapi \
     import APIRouter, WebSocket, WebSocketDisconnect
 
+from sqlalchemy.orm \
+    import Session
+
+from app.db.database \
+    import SessionLocal
+
+from app.db.models.credentials \
+    import Credential
+
+from app.core.crypto \
+    import decrypt
+
 from app.websocket.connection_manager \
     import ConnectionManager
 
@@ -25,6 +37,8 @@ async def websocket_scan(
         websocket
     )
 
+    db: Session = SessionLocal()
+
     try:
 
         data = \
@@ -32,21 +46,55 @@ async def websocket_scan(
 
         hosts = data["hosts"]
 
-        username = data["username"]
+        credential_id = \
+            data["credential_id"]
 
-        password = data["password"]
+        #
+        # Load credential
+        #
+        credential = db.query(
+            Credential
+        ).filter(
+            Credential.id ==
+            credential_id
+        ).first()
 
+        if not credential:
+
+            await websocket.send_json({
+
+                "type": "error",
+
+                "message":
+                    "Credential not found"
+            })
+
+            return
+
+        #
+        # Decrypt password
+        #
+        password = decrypt(
+            credential.encrypted_password
+        )
+
+        username = \
+            credential.username
+
+        #
+        # Start scan
+        #
         scan_manager = \
             ScanManager(websocket)
+        
+        credential_id = data["credential_id"]
 
         findings = \
             await scan_manager.run_scan(
 
                 hosts,
 
-                username,
-
-                password
+                credential_id
             )
 
         LATEST_FINDINGS = findings
@@ -71,6 +119,8 @@ async def websocket_scan(
         })
 
     finally:
+
+        db.close()
 
         try:
 

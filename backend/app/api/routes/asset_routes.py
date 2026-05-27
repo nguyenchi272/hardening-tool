@@ -84,6 +84,9 @@ def get_asset_detail(
 
             "id": asset.id,
 
+            "credential_id":
+                asset.credential_id,
+
             "hostname":
                 asset.hostname,
 
@@ -118,6 +121,9 @@ def get_asset_detail(
 
                 "finding_id":
                     finding.finding_id,
+                
+                "asset_id":
+                    asset.id,
 
                 "title":
                     finding.title,

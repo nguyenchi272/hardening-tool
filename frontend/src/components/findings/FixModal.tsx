@@ -6,7 +6,7 @@ interface Props {
 
   open: boolean
 
-  host: string
+  assetId: number
 
   findingId: string
 
@@ -14,17 +14,16 @@ interface Props {
 }
 
 export default function FixModal({
+
   open,
-  host,
+
+  assetId,
+
   findingId,
+
   onClose
+
 }: Props) {
-
-  const [username, setUsername] =
-    useState("")
-
-  const [password, setPassword] =
-    useState("")
 
   const [loading, setLoading] =
     useState(false)
@@ -48,7 +47,7 @@ export default function FixModal({
         setLoading(true)
 
         setError("")
-        
+
         const response =
           await fetch(
             "http://localhost:8080/api/v1/fix",
@@ -61,10 +60,12 @@ export default function FixModal({
               },
 
               body: JSON.stringify({
-                host:host,
-                username,
-                password,
-                finding_id: findingId
+
+                asset_id:
+                  assetId,
+
+                finding_id:
+                  findingId
               })
             }
           )
@@ -161,84 +162,28 @@ export default function FixModal({
 
         </div>
 
-        <div
-          className="
-            mt-6
-            space-y-4
-          "
-        >
+        <div className="mt-6">
 
-          <div>
-
-            <label
-              className="
-                text-sm
-                text-slate-400
-              "
-            >
-              SSH Username
-            </label>
-
-            <input
-              value={username}
-              onChange={(e) =>
-                setUsername(
-                  e.target.value
-                )
-              }
-              className="
-                mt-2
-                w-full
-                rounded-xl
-                border
-                border-slate-700
-                bg-slate-900
-                px-4
-                py-3
-              "
-            />
-
-          </div>
-
-          <div>
-
-            <label
-              className="
-                text-sm
-                text-slate-400
-              "
-            >
-              SSH Password
-            </label>
-
-            <input
-              type="password"
-              value={password}
-              onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
-              }
-              className="
-                mt-2
-                w-full
-                rounded-xl
-                border
-                border-slate-700
-                bg-slate-900
-                px-4
-                py-3
-              "
-            />
-
+          <div
+            className="
+              rounded-xl
+              border
+              border-blue-500/30
+              bg-blue-500/10
+              p-4
+              text-sm
+              text-blue-300
+            "
+          >
+            Credential will be loaded
+            automatically from asset.
           </div>
 
           <button
             onClick={handleFix}
-            disabled={
-              loading
-            }
+            disabled={loading}
             className="
+              mt-6
               w-full
               rounded-xl
               bg-blue-600
@@ -260,6 +205,7 @@ export default function FixModal({
 
               <div
                 className="
+                  mt-4
                   rounded-xl
                   border
                   border-red-500/30
@@ -278,6 +224,7 @@ export default function FixModal({
 
               <div
                 className="
+                  mt-6
                   rounded-xl
                   border
                   border-green-500/30
@@ -296,13 +243,9 @@ export default function FixModal({
                   Remediation Completed
                 </p>
 
-                <div
-                  className="
-                    space-y-4
-                  "
-                >
+                <div className="space-y-4">
 
-                  {result.results.map(
+                  {result?.results?.map(
                     (
                       item: any,
                       index: number

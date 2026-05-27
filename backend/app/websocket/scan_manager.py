@@ -7,6 +7,9 @@ from app.services.realtime_scan \
 from app.services.persistence_service \
     import PersistenceService
 
+from app.services.credential_service \
+    import CredentialService
+
 from app.db.database \
     import SessionLocal
 
@@ -29,28 +32,55 @@ class ScanManager:
     async def run_scan(
         self,
         hosts,
-        username,
-        password
+        credential_id
     ):
-
-        scanner = \
-            RealtimeScanService(
-                self.websocket
-            )
-
-        results = \
-            await scanner.run_multi_scan(
-                hosts,
-                username,
-                password
-            )
 
         db: Session = SessionLocal()
 
-        all_findings = []
-
         try:
 
+            #
+            # Load credential
+            #
+            credential = \
+                CredentialService() \
+                    .get_credential_by_id(
+                        db,
+                        credential_id
+                    )
+
+            if not credential:
+
+                raise Exception(
+                    "Credential not found"
+                )
+
+            username = \
+                credential.username
+
+            password = \
+                credential.password
+
+            #
+            # Start realtime scanner
+            #
+            scanner = \
+                RealtimeScanService(
+                    self.websocket
+                )
+
+            results = \
+                await scanner.run_multi_scan(
+                    hosts,
+                    username,
+                    password
+                )
+
+            all_findings = []
+
+            #
+            # Save scan results
+            #
             for result in results:
 
                 #
@@ -81,7 +111,9 @@ class ScanManager:
 
                     findings,
 
-                    collected_data
+                    collected_data,
+
+                    credential_id
                 )
 
                 all_findings.extend(

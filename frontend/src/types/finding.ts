@@ -3,6 +3,8 @@ export interface Finding {
 
   id: string
 
+  asset_id: number
+
   finding_id: string
 
   title: string

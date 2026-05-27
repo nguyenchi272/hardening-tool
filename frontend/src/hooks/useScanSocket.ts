@@ -6,8 +6,7 @@ import { Finding }
 
 interface ScanPayload {
   hosts: string[]
-  username: string
-  password: string
+  credential_id: number
 }
 
 export default function useScanSocket() {

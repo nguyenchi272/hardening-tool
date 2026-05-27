@@ -27,7 +27,6 @@ export default function FindingDrawer({
 
   const [showFix, setShowFix] =
     useState(false)
-
   return (
 
     <>
@@ -232,7 +231,7 @@ export default function FindingDrawer({
 
       <FixModal
         open={showFix}
-        host={finding.ip_address}
+        assetId={finding.asset_id}
         findingId={
           finding.finding_id
         }
@@ -242,6 +241,7 @@ export default function FindingDrawer({
       />
 
     </>
+
   )
 }
 

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.session \
@@ -11,6 +11,8 @@ from app.models.credential \
 
 from app.services.credential_service \
     import CredentialService
+from app.db.models.asset import Asset
+from app.db.models.credentials import Credential
 
 router = APIRouter()
 
@@ -71,3 +73,53 @@ def get_credentials(
 
         for c in credentials
     ]
+
+@router.delete("/credentials/{credential_id}")
+def delete_credential(
+    credential_id: int,
+    db: Session = Depends(get_db)
+):
+
+    #
+    # Check assets using credential
+    #
+    asset_using = (
+        db.query(Asset)
+        .filter(
+            Asset.credential_id == credential_id
+        )
+        .first()
+    )
+
+    if asset_using:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Credential is assigned "
+                "to one or more assets"
+            )
+        )
+
+    credential = (
+        db.query(Credential)
+        .filter(
+            Credential.id == credential_id
+        )
+        .first()
+    )
+
+    if not credential:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Credential not found"
+        )
+
+    db.delete(credential)
+
+    db.commit()
+
+    return {
+        "status": "deleted"
+    }

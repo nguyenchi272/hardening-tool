@@ -20,14 +20,14 @@ export default function ScanForm() {
   const [targets, setTargets] =
     useState("")
 
-  const [username, setUsername] =
-    useState("")
-
-  const [password, setPassword] =
-    useState("")
-
   const [scanning, setScanning] =
     useState(false)
+
+  const [credentials, setCredentials] =
+    useState<any[]>([])
+
+  const [credentialId, setCredentialId] =
+    useState<number | null>(null)
 
   const [
     selectedFinding,
@@ -44,6 +44,26 @@ export default function ScanForm() {
     error,
     startRealtimeScan
   } = useScanSocket()
+
+  useEffect(() => {
+
+    fetch(
+      "http://localhost:8080/api/v1/credentials"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+
+        setCredentials(data)
+
+        if (data.length > 0) {
+
+          setCredentialId(
+            data[0].id
+          )
+        }
+      })
+
+  }, [])
 
   useEffect(() => {
 
@@ -65,8 +85,7 @@ export default function ScanForm() {
     
     startRealtimeScan({
       hosts,
-      username,
-      password
+      credential_id: Number(credentialId)
     })
   }
 
@@ -119,20 +138,71 @@ export default function ScanForm() {
         bg-[#081121]
         p-8
       "
-    >
+    > 
 
       <h2
-        className="
-          text-3xl
-          font-bold
-          mb-8
-        "
+      className="
+        text-3xl
+        font-bold
+        mb-8
+      "
       >
-        Start Security Scan
+      Start Security Scan
       </h2>
 
-      <div className="space-y-6">
+      
 
+      <div>
+
+        <label
+          className="
+            mb-2
+            block
+            text-sm
+            text-slate-400
+          "
+        >
+          Saved Credential
+        </label>
+
+        <select
+          value={credentialId ?? ""}
+          onChange={(e) =>
+            setCredentialId(
+              Number(e.target.value)
+            )
+          }
+          className="
+            w-full
+            rounded-xl
+            border
+            border-slate-700
+            bg-slate-900
+            px-4
+            py-3
+          "
+        >
+          <option value="">
+            Select Credential
+          </option>
+          {credentials.map((cred) => (
+
+            <option
+              key={cred.id}
+              value={cred.id}
+            >
+              {cred.name}
+              {" • "}
+              {cred.username}
+            </option>
+          ))}
+
+        </select>
+
+      </div>
+      
+
+      <div className="space-y-6">
         <div>
 
           <label
@@ -144,57 +214,24 @@ export default function ScanForm() {
             Server IP / Hostname
           </label>
 
-        <textarea
-        value={targets}
+          <textarea
+            value={targets}
 
-        onChange={(e) =>
-            setTargets(
-            e.target.value
-            )
-        }
-
-        placeholder={`
-        172.22.1.10
-        172.22.1.11
-        172.22.1.12
-        `}
-
-        className="
-            mt-2
-            min-h-[160px]
-            w-full
-            rounded-xl
-            border
-            border-slate-700
-            bg-slate-900
-            px-4
-            py-3
-            font-mono
-            outline-none
-            focus:border-blue-500
-        "
-        />
-        </div>
-
-        <div>
-
-          <label
-            className="
-              text-sm
-              text-slate-400
-            "
-          >
-            SSH Username
-          </label>
-
-          <input
-            value={username}
             onChange={(e) =>
-              setUsername(e.target.value)
+              setTargets(
+                e.target.value
+              )
             }
-            placeholder="root"
+
+            placeholder={`
+              172.22.1.10
+              172.22.1.11
+              server01.local
+            `}
+
             className="
               mt-2
+              min-h-[160px]
               w-full
               rounded-xl
               border
@@ -202,46 +239,21 @@ export default function ScanForm() {
               bg-slate-900
               px-4
               py-3
+              font-mono
               outline-none
-              transition-all
               focus:border-blue-500
             "
           />
 
-        </div>
-
-        <div>
-
-          <label
-            className="
-              text-sm
-              text-slate-400
-            "
-          >
-            SSH Password
-          </label>
-
-          <input
-            type="password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            placeholder="••••••••"
+          <p
             className="
               mt-2
-              w-full
-              rounded-xl
-              border
-              border-slate-700
-              bg-slate-900
-              px-4
-              py-3
-              outline-none
-              transition-all
-              focus:border-blue-500
+              text-xs
+              text-slate-500
             "
-          />
+          >
+            One target per line
+          </p>
 
         </div>
 
@@ -250,8 +262,7 @@ export default function ScanForm() {
           disabled={
             scanning ||
             !targets ||
-            !username ||
-            !password
+            !credentialId
           }
           className="
             w-full

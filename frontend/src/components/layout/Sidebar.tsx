@@ -4,7 +4,8 @@ import {
   Server,
   AlertTriangle,
   ScanLine,
-  BadgeCheck
+  BadgeCheck,
+  Key
 } from "lucide-react"
 
 import {
@@ -24,6 +25,12 @@ const items = [
     title: "Assets",
     path: "/assets",
     icon: Server
+  },
+
+  {
+    title: "Credentials",
+    path: "/credentials",
+    icon: Key
   },
 
   {

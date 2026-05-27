@@ -24,7 +24,8 @@ class PersistenceService:
         db: Session,
         host: str,
         findings,
-        collected_data
+        collected_data,
+        credential_id
     ):
 
         #
@@ -68,7 +69,9 @@ class PersistenceService:
 
                 os=real_os,
 
-                status="Online"
+                status="Online",
+
+                credential_id=credential_id
             )
 
             db.add(asset)
@@ -81,6 +84,7 @@ class PersistenceService:
         # Update asset info
         #
         else:
+            asset.credential_id = credential_id
 
             asset.ip_address = host
 
