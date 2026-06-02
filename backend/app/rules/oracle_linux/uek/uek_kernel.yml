@@ -1,0 +1,56 @@
+id: OL-UEK-001
+
+title: Ensure Oracle UEK kernel is installed
+
+severity: Medium
+
+risk_score: 5
+
+category: Kernel
+
+description: >
+  Oracle Linux systems should use the Unbreakable Enterprise Kernel.
+
+impact: >
+  Systems not using UEK may miss Oracle-specific
+  security and performance enhancements.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: kernel_version
+  pattern: 'uek'
+
+remediation: |
+  Install and boot using Oracle UEK kernel.
+
+fix:
+
+  supported: false
+
+  safe: false
+
+  requires_restart: true
+
+  requires_reboot: true
+
+  manual_review: true
+
+  commands: []
+
+references:
+  - Oracle UEK Documentation
+
+compliance:
+  - Oracle Linux Hardening
+
+tags:
+  - kernel
+  - uek
+  - oracle

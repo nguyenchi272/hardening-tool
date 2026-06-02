@@ -1,56 +1,76 @@
-import os
+from pathlib import Path
 import yaml
 
+from app.services.rule_validator \
+    import RuleValidator
 
-RULE_CACHE = []
 
+def load_rules(
+    os_name
+):
 
-def load_rules():
+    rules_root = (
+        Path(__file__)
+        .parent.parent
+        / "rules"
+    )
 
-    global RULE_CACHE
+    common_path = \
+        rules_root / "common"
 
-    #
-    # CACHE
-    #
-    if RULE_CACHE:
-
-        return RULE_CACHE
-
-    rules_dir = "app/rules"
+    os_path = \
+        rules_root / os_name
 
     loaded_rules = []
 
-    #
-    # RECURSIVE WALK
-    #
-    for root, dirs, files in os.walk(
-        rules_dir
-    ):
+    search_paths = [
+        common_path,
+        os_path
+    ]
 
-        for file in files:
+    for path_root in search_paths:
 
-            if not file.endswith(
-                ".yaml"
-            ):
+        if not path_root.exists():
 
-                continue
-
-            path = os.path.join(
-                root,
-                file
+            print(
+                f"[RULE PATH NOT FOUND] "
+                f"{path_root}"
             )
 
-            with open(
-                path,
-                "r"
-            ) as f:
+            continue
 
-                rule = yaml.safe_load(f)
+        for file in path_root.rglob(
+            "*.yml"
+        ):
+
+            try:
+
+                with open(
+                    file,
+                    "r",
+                    encoding="utf-8"
+                ) as f:
+
+                    rule = yaml.safe_load(f)
+
+                RuleValidator.validate(
+                    rule
+                )
 
                 loaded_rules.append(
                     rule
                 )
 
-    RULE_CACHE = loaded_rules
+            except Exception as e:
 
-    return RULE_CACHE
+                print(
+                    f"[RULE ERROR] {file}"
+                )
+
+                print(str(e))
+
+    print(
+        f"Loaded {len(loaded_rules)} rules"
+    )
+
+    return loaded_rules

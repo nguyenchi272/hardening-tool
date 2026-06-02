@@ -1,0 +1,57 @@
+id: UBUNTU-SSH-001
+
+title: Ensure SSH Protocol is set to 2
+
+severity: High
+
+risk_score: 8
+
+category: SSH
+
+description: >
+  SSH Protocol 2 should be enforced.
+
+impact: >
+  SSH Protocol 1 is insecure and vulnerable to attacks.
+
+supported_os:
+  - ubuntu
+
+supported_versions:
+  - "20.04"
+  - "22.04"
+  - "24.04"
+
+check:
+  type: regex_not_match
+  target: sshd_config
+  pattern: '^Protocol\s+2'
+
+remediation: |
+  Configure SSH daemon to use Protocol 2.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - echo 'Protocol 2' >> /etc/ssh/sshd_config
+    - systemctl restart ssh
+
+references:
+  - CIS Ubuntu Benchmark
+
+compliance:
+  - CIS 5.1.1
+
+tags:
+  - ssh
+  - crypto

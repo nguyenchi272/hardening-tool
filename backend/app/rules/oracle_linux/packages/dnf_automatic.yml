@@ -1,0 +1,57 @@
+id: OL-PKG-001
+
+title: Ensure dnf-automatic is enabled
+
+severity: Medium
+
+risk_score: 5
+
+category: Patch Management
+
+description: >
+  Automatic security updates should be enabled.
+
+impact: >
+  Systems may remain vulnerable if updates are not applied promptly.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: dnf_automatic
+  pattern: '^enabled$'
+
+remediation: |
+  Enable dnf-automatic timer.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable dnf-automatic.timer
+    - systemctl start dnf-automatic.timer
+
+references:
+  - Oracle Linux Documentation
+
+compliance:
+  - CIS 1.9
+
+tags:
+  - updates
+  - patching
+  - dnf

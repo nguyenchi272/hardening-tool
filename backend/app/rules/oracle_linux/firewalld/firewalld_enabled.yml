@@ -1,0 +1,56 @@
+id: OL-FW-001
+
+title: Ensure firewalld is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Firewall
+
+description: >
+  firewalld should be enabled and running.
+
+impact: >
+  Missing firewall protection increases network attack surface.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: firewalld
+  pattern: '^active$'
+
+remediation: |
+  Enable and start firewalld service.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable firewalld
+    - systemctl start firewalld
+
+references:
+  - CIS Oracle Linux Benchmark
+
+compliance:
+  - CIS 3.4.2
+
+tags:
+  - firewall
+  - network

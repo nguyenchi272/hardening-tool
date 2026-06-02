@@ -1,0 +1,58 @@
+id: UBUNTU-SVC-001
+
+title: Ensure Avahi service is disabled
+
+severity: Medium
+
+risk_score: 5
+
+category: Services
+
+description: >
+  Avahi service should be disabled unless required.
+
+impact: >
+  Zeroconf discovery services increase attack surface.
+
+supported_os:
+  - ubuntu
+
+supported_versions:
+  - "20.04"
+  - "22.04"
+  - "24.04"
+
+check:
+  type: regex
+  target: services
+  pattern: 'avahi-daemon'
+
+remediation: |
+  Disable Avahi service.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl stop avahi-daemon
+    - systemctl disable avahi-daemon
+
+references:
+  - CIS Ubuntu Benchmark
+
+compliance:
+  - CIS 2.1.1
+
+tags:
+  - services
+  - avahi
+  - mdns

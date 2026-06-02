@@ -1,0 +1,57 @@
+id: CIS-KERNEL-001
+
+title: Ensure IP forwarding is disabled
+
+severity: High
+
+risk_score: 8
+
+category: Kernel
+
+description: >
+  IP forwarding should be disabled unless required.
+
+impact: >
+  IP forwarding may allow packet routing attacks.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: sysctl
+  pattern: '^net.ipv4.ip_forward\s*=\s*1'
+
+remediation: |
+  Disable IP forwarding.
+
+fix:
+
+  supported: true
+
+  safe: false
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: true
+
+  commands:
+    - sysctl -w net.ipv4.ip_forward=0
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 3.3.1
+
+tags:
+  - kernel
+  - networking

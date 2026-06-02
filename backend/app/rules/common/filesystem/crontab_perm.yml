@@ -1,0 +1,60 @@
+id: CIS-FILE-005
+
+title: Ensure permissions on /etc/crontab are configured
+
+severity: Medium
+
+risk_score: 5
+
+category: Filesystem
+
+description: >
+  The /etc/crontab file must have strict permissions.
+
+impact: >
+  Weak permissions may allow unauthorized scheduled task modification.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: crontab_perm
+  pattern: "600 root root"
+
+remediation: |
+  Set proper ownership and permissions on /etc/crontab.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - chmod 600 /etc/crontab
+    - chown root:root /etc/crontab
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 5.1.2
+
+tags:
+  - cron
+  - permissions
+  - persistence

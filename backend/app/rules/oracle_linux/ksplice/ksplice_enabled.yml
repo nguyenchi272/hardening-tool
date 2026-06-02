@@ -1,0 +1,58 @@
+id: OL-KSPLICE-001
+
+title: Ensure Ksplice service is enabled
+
+severity: Medium
+
+risk_score: 6
+
+category: Patch Management
+
+description: >
+  Ksplice should be enabled for live kernel patching.
+
+impact: >
+  Missing live patching increases exposure window
+  for kernel vulnerabilities.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: ksplice_service
+  pattern: '^active$'
+
+remediation: |
+  Enable and start Ksplice service.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable uptrack
+    - systemctl start uptrack
+
+references:
+  - https://ksplice.oracle.com/
+
+compliance:
+  - Oracle Linux Security
+
+tags:
+  - ksplice
+  - patching
+  - livepatch

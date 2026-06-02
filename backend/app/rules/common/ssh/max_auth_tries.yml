@@ -1,0 +1,68 @@
+id: CIS-SSH-003
+
+title: Ensure MaxAuthTries is configured
+
+severity: Medium
+
+risk_score: 6
+
+category: SSH
+
+description: >
+  SSH MaxAuthTries should be limited.
+
+impact: >
+  Unlimited authentication attempts increase brute-force risk.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+  - ubuntu
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+  - "20.04"
+  - "22.04"
+
+check:
+  type: regex_not_match
+  target: sshd_config
+  pattern: '^MaxAuthTries\s+4'
+
+remediation: |
+  Edit:
+  /etc/ssh/sshd_config
+
+  Set:
+  MaxAuthTries 4
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - echo 'MaxAuthTries 4' >> /etc/ssh/sshd_config
+    - systemctl restart sshd
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 5.2.5
+
+tags:
+  - ssh
+  - authentication
+  - brute-force

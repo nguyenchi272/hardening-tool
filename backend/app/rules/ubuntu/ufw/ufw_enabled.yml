@@ -1,0 +1,56 @@
+id: UBUNTU-FW-001
+
+title: Ensure UFW firewall is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Firewall
+
+description: >
+  UFW firewall should be enabled.
+
+impact: >
+  Missing firewall protection increases attack surface.
+
+supported_os:
+  - ubuntu
+
+supported_versions:
+  - "20.04"
+  - "22.04"
+  - "24.04"
+
+check:
+  type: regex_not_match
+  target: ufw_status
+  pattern: '^Status:\s+active'
+
+remediation: |
+  Enable UFW firewall.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - ufw --force enable
+
+references:
+  - CIS Ubuntu Benchmark
+
+compliance:
+  - CIS 3.5.1
+
+tags:
+  - firewall
+  - ufw

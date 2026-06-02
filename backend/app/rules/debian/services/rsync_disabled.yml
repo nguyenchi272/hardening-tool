@@ -1,0 +1,56 @@
+id: DEBIAN-SVC-001
+
+title: Ensure rsync service is disabled
+
+severity: Medium
+
+risk_score: 5
+
+category: Services
+
+description: >
+  rsync daemon should be disabled unless required.
+
+impact: >
+  Unnecessary network services increase attack surface.
+
+supported_os:
+  - debian
+
+supported_versions:
+  - "11"
+  - "12"
+
+check:
+  type: regex
+  target: services
+  pattern: 'rsync'
+
+remediation: |
+  Disable rsync service if not required.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: true
+
+  commands:
+    - systemctl stop rsync
+    - systemctl disable rsync
+
+references:
+  - CIS Debian Benchmark
+
+compliance:
+  - CIS 2.1.2
+
+tags:
+  - services
+  - rsync

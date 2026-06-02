@@ -1,0 +1,48 @@
+id: CIS-FILE-004
+
+title: Ensure no world writable files exist
+
+severity: Medium
+
+risk_score: 5
+
+category: Filesystem
+
+description: >
+  World writable files should not exist on the system.
+
+impact: >
+  World writable files may allow unauthorized modification.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: world_writable
+  pattern: '.+'
+
+remediation: |
+  Identify and remove world writable permissions where appropriate.
+
+fix:
+
+  supported: false
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 6.1.11
+
+tags:
+  - filesystem
+  - permissions
+  - integrity

@@ -1,0 +1,58 @@
+id: RHEL-SELINUX-001
+
+title: Ensure SELinux is enabled
+
+severity: Critical
+
+risk_score: 10
+
+category: SELinux
+
+description: >
+  SELinux should be enabled and enforcing.
+
+impact: >
+  Disabled SELinux weakens mandatory access controls.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: selinux
+  pattern: '^Enforcing'
+
+remediation: |
+  Enable SELinux enforcing mode.
+
+fix:
+
+  supported: true
+
+  safe: false
+
+  requires_restart: false
+
+  requires_reboot: true
+
+  manual_review: true
+
+  commands:
+    - setenforce 1
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 1.6.1
+
+tags:
+  - selinux
+  - mac

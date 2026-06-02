@@ -244,8 +244,8 @@ export default function FixModal({
                 </p>
 
                 <div className="space-y-4">
-
-                  {result?.results?.map(
+                  
+                  {result?.results?.results?.map(
                     (
                       item: any,
                       index: number

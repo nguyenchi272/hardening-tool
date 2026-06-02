@@ -1,0 +1,56 @@
+id: OL-AUDIT-001
+
+title: Ensure auditd is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Logging
+
+description: >
+  auditd must be enabled for security auditing.
+
+impact: >
+  Missing audit logs reduce visibility into security events.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: auditd
+  pattern: '^active$'
+
+remediation: |
+  Enable and start auditd service.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable auditd
+    - systemctl start auditd
+
+references:
+  - CIS Oracle Linux Benchmark
+
+compliance:
+  - CIS 4.1.2
+
+tags:
+  - audit
+  - logging

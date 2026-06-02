@@ -1,0 +1,58 @@
+id: OL-SELINUX-001
+
+title: Ensure SELinux is enforcing
+
+severity: High
+
+risk_score: 8
+
+category: Access Control
+
+description: >
+  SELinux should operate in enforcing mode.
+
+impact: >
+  Disabled SELinux weakens mandatory access controls
+  and increases attack surface.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: selinux
+  pattern: '^Enforcing$'
+
+remediation: |
+  Configure SELinux to enforcing mode.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: true
+
+  manual_review: false
+
+  commands:
+    - setenforce 1
+    - sed -i 's/^SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
+
+references:
+  - CIS Oracle Linux Benchmark
+
+compliance:
+  - CIS 1.6.1
+
+tags:
+  - selinux
+  - mac
+  - hardening

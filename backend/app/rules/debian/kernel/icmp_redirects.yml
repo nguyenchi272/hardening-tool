@@ -1,0 +1,57 @@
+id: DEBIAN-KERNEL-001
+
+title: Ensure ICMP redirects are disabled
+
+severity: High
+
+risk_score: 8
+
+category: Kernel
+
+description: >
+  ICMP redirects should be disabled.
+
+impact: >
+  ICMP redirects can be abused for man-in-the-middle attacks.
+
+supported_os:
+  - debian
+
+supported_versions:
+  - "11"
+  - "12"
+
+check:
+  type: regex
+  target: sysctl
+  pattern: 'net.ipv4.conf.all.accept_redirects\s*=\s*1'
+
+remediation: |
+  Disable ICMP redirects.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - sysctl -w net.ipv4.conf.all.accept_redirects=0
+    - echo 'net.ipv4.conf.all.accept_redirects = 0' >> /etc/sysctl.conf
+
+references:
+  - CIS Debian Benchmark
+
+compliance:
+  - CIS 3.2.2
+
+tags:
+  - kernel
+  - networking
+  - sysctl

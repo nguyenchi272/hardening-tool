@@ -1,0 +1,59 @@
+id: CIS-SVC-002
+
+title: Ensure rsh server is not installed
+
+severity: High
+
+risk_score: 8
+
+category: Services
+
+description: >
+  The rsh server package should not be installed.
+
+impact: >
+  rsh transmits authentication data insecurely.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: installed_packages
+  pattern: 'rsh-server'
+
+remediation: |
+  Remove rsh server package.
+
+fix:
+
+  supported: true
+
+  safe: false
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: true
+
+  commands:
+    - yum remove -y rsh-server
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 2.1.2
+
+tags:
+  - insecure-services
+  - legacy
+  - plaintext

@@ -1,0 +1,56 @@
+id: RHEL-PKG-002
+
+title: Ensure xinetd is not installed
+
+severity: Medium
+
+risk_score: 6
+
+category: Packages
+
+description: >
+  xinetd should not be installed unless required.
+
+impact: >
+  xinetd may expose unnecessary legacy services.
+
+supported_os:
+  - rhel
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: installed_packages
+  pattern: '^xinetd'
+
+remediation: |
+  Remove xinetd package.
+
+fix:
+
+  supported: true
+
+  safe: false
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: true
+
+  commands:
+    - yum remove -y xinetd
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 2.1
+
+tags:
+  - packages
+  - legacy-services

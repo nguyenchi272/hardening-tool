@@ -1,11 +1,16 @@
 from fastapi import WebSocket
 import asyncio
 
-from app.services.linux_audit \
-    import LinuxAudit
-
 from app.services.dynamic_audit_engine \
     import DynamicAuditEngine
+
+from app.services.os_detector import OSDetector
+
+from app.services.ssh_collector \
+    import SSHCollector
+
+from app.services.audit_factory \
+    import AuditFactory
 
 
 class RealtimeScanService:
@@ -73,76 +78,113 @@ class RealtimeScanService:
         password
     ):
 
-        await self.send_progress(
-            10,
-            f"[{host}] Connecting SSH..."
-        )
-
-        audit = LinuxAudit(
-            host,
-            username,
-            password
-        )
-
-        await self.send_progress(
-            25,
-            f"[{host}] Collecting system data..."
-        )
-
-        collected_data = \
-            audit.collect()
-
-        self.collected_data = collected_data
-
-        await self.send_progress(
-            60,
-            f"[{host}] Running audit engine..."
-        )
+        collector = None
 
         try:
+
+            await self.send_progress(
+                15,
+                f"[{host}] Connecting SSH..."
+            )
+
+            collector = SSHCollector(
+
+                host,
+
+                username,
+
+                password
+            )
+
+            collector.connect()
+
+            await self.send_progress(
+                20,
+                f"[{host}] Detecting OS..."
+            )
+
+            os_name = \
+                OSDetector.detect(
+                    collector
+                )
+
+            await self.send_progress(
+                25,
+                f"[{host}] Detected OS: {os_name}"
+            )
+
+            audit = \
+                AuditFactory.create(
+
+                    os_name,
+
+                    collector
+                )
+
+            await self.send_progress(
+                30,
+                f"[{host}] Collecting system data..."
+            )
+
+            collected_data = \
+                audit.collect()
+
+            await self.send_progress(
+                60,
+                f"[{host}] Running audit engine..."
+            )
 
             engine = DynamicAuditEngine()
 
             findings = engine.run(
+
+                os_name,
+
                 collected_data
             )
+
+            for finding in findings:
+
+                await self.send_finding(
+                    finding
+                )
+
+                await asyncio.sleep(0.2)
+
+            await self.send_progress(
+                100,
+                f"[{host}] Scan completed"
+            )
+
+            return {
+
+                "host": host,
+
+                "findings": findings,
+
+                "collected_data":
+                    collected_data
+            }
 
         except Exception as e:
 
-            print(
-                "ENGINE ERROR:",
-                str(e)
-            )
-
-            raise e
-
-        for finding in findings:
-
-            await self.send_finding(
-                finding
-            )
-
-            await asyncio.sleep(0.2)
-
-        if len(findings) == 0:
-
             await self.websocket.send_json({
-                "type": "info",
+
+                "type": "error",
+
                 "message":
-                    f"[{host}] No findings detected"
+                    f"[{host}] {str(e)}"
             })
 
-        await self.send_progress(
-            100,
-            f"[{host}] Scan completed"
-        )
+            return {
 
-        return {
+                "host": host,
 
-            "host": host,
+                "error": str(e)
+            }
 
-            "findings": findings,
+        finally:
 
-            "collected_data":
-                collected_data
-        }
+            if collector:
+
+                collector.close()

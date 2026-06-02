@@ -1,0 +1,59 @@
+id: RHEL-FW-001
+
+title: Ensure firewalld is enabled
+
+severity: Critical
+
+risk_score: 9
+
+category: Firewall
+
+description: >
+  firewalld should be enabled and active.
+
+impact: >
+  Missing firewall protection exposes unnecessary services.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: firewalld
+  pattern: '^active'
+
+remediation: |
+  Enable and start firewalld.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable firewalld
+    - systemctl start firewalld
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 3.5.1.1
+
+tags:
+  - firewall
+  - networking

@@ -4,6 +4,12 @@ from app.services.ssh_collector \
 from app.services.rule_loader \
     import load_rules
 
+from app.services.remediation_engine \
+    import RemediationEngine
+
+from app.services.os_detector \
+    import OSDetector
+
 
 class RemediationService:
 
@@ -16,73 +22,88 @@ class RemediationService:
     ):
 
         #
-        # Find matching rule
-        #
-        rules = load_rules()
-
-        rule = next(
-            (
-                r for r in rules
-                if r["id"] == finding_id
-            ),
-            None
-        )
-
-        if not rule:
-
-            raise Exception(
-                f"Rule not found: {finding_id}"
-            )
-
-        #
-        # No fix block
-        #
-        if "fix" not in rule:
-
-            raise Exception(
-                f"No remediation available"
-            )
-
-        #
         # SSH connect
         #
         ssh = SSHCollector(
+
             host,
+
             username,
+
             password
         )
 
         ssh.connect()
 
-        results = []
+        try:
 
-        #
-        # Execute commands
-        #
-        for cmd in rule["fix"]:
+            #
+            # Detect OS
+            #
+            os_name = \
+                OSDetector.detect(ssh)
 
-            output = ssh.run_command(cmd)
+            #
+            # Load OS-specific rules
+            #
+            rules = load_rules(
+                os_name
+            )
 
-            results.append({
+            #
+            # Find matching rule
+            #
+            rule = next(
+                (
+                    r for r in rules
+                    if r["id"] == finding_id
+                ),
+                None
+            )
 
-                "command": cmd,
+            if not rule:
 
-                "stdout":
-                    output["stdout"],
+                raise Exception(
+                    f"Rule not found: {finding_id}"
+                )
 
-                "stderr":
-                    output["stderr"]
-            })
+            #
+            # No remediation block
+            #
+            if "fix" not in rule:
 
-        ssh.close()
+                raise Exception(
+                    "No remediation available"
+                )
 
-        return {
+            fix_data = rule["fix"]
 
-            "status": "success",
+            #
+            # Execute remediation
+            #
+            engine = RemediationEngine()
 
-            "finding_id":
-                finding_id,
+            results = engine.execute(
 
-            "results":
-                results
-        }
+                ssh,
+
+                fix_data
+            )
+
+            return {
+
+                "status": "success",
+
+                "finding_id":
+                    finding_id,
+
+                "os":
+                    os_name,
+
+                "results":
+                    results
+            }
+
+        finally:
+
+            ssh.close()

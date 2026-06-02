@@ -1,0 +1,57 @@
+id: DEBIAN-SSH-001
+
+title: Ensure SSH root login is disabled
+
+severity: Critical
+
+risk_score: 10
+
+category: SSH
+
+description: >
+  Root login through SSH should be disabled.
+
+impact: >
+  Remote root access increases the risk of brute-force and credential attacks.
+
+supported_os:
+  - debian
+
+supported_versions:
+  - "11"
+  - "12"
+
+check:
+  type: regex
+  target: sshd_config
+  pattern: '^PermitRootLogin\s+yes'
+
+remediation: |
+  Disable root login via SSH.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+    - systemctl restart ssh
+
+references:
+  - CIS Debian Benchmark
+
+compliance:
+  - CIS 5.2.8
+
+tags:
+  - ssh
+  - root
+  - authentication

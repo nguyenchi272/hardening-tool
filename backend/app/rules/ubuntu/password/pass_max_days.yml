@@ -1,0 +1,56 @@
+id: UBUNTU-PASS-001
+
+title: Ensure password expiration is 365 days or less
+
+severity: Medium
+
+risk_score: 5
+
+category: Password Policy
+
+description: >
+  Password maximum age should be configured.
+
+impact: >
+  Long password validity increases credential compromise risk.
+
+supported_os:
+  - ubuntu
+
+supported_versions:
+  - "20.04"
+  - "22.04"
+  - "24.04"
+
+check:
+  type: regex_not_match
+  target: login_defs
+  pattern: '^PASS_MAX_DAYS\s+365'
+
+remediation: |
+  Configure PASS_MAX_DAYS to 365 or less.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS 365/' /etc/login.defs
+
+references:
+  - CIS Ubuntu Benchmark
+
+compliance:
+  - CIS 5.4.1.1
+
+tags:
+  - password
+  - aging

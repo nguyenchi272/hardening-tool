@@ -1,0 +1,56 @@
+id: OL-REPO-001
+
+title: Ensure repository GPG check is enabled
+
+severity: High
+
+risk_score: 7
+
+category: Package Management
+
+description: >
+  Repository packages should be verified using GPG signatures.
+
+impact: >
+  Unsigned packages may allow malicious software installation.
+
+supported_os:
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: yum_repos
+  pattern: 'gpgcheck=1'
+
+remediation: |
+  Configure yum repositories to enforce GPG signature validation.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: true
+
+  commands:
+    - sed -i 's/^gpgcheck=.*/gpgcheck=1/' /etc/yum.repos.d/*.repo
+
+references:
+  - Oracle Linux Documentation
+
+compliance:
+  - CIS 1.2.3
+
+tags:
+  - yum
+  - gpg
+  - repositories

@@ -1,0 +1,59 @@
+id: RHEL-AUDIT-002
+
+title: Ensure auditd service is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Audit
+
+description: >
+  auditd service should be enabled and running.
+
+impact: >
+  Disabled auditd reduces forensic visibility.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: auditd
+  pattern: '^active'
+
+remediation: |
+  Enable and start auditd.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable auditd
+    - systemctl start auditd
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 4.1.2
+
+tags:
+  - audit
+  - logging

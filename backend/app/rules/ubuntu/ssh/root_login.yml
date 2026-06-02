@@ -1,0 +1,58 @@
+id: UBUNTU-SSH-002
+
+title: Ensure SSH root login is disabled
+
+severity: Critical
+
+risk_score: 10
+
+category: SSH
+
+description: >
+  Root login via SSH should be disabled.
+
+impact: >
+  Remote root access increases brute-force attack risk.
+
+supported_os:
+  - ubuntu
+
+supported_versions:
+  - "20.04"
+  - "22.04"
+  - "24.04"
+
+check:
+  type: regex
+  target: sshd_config
+  pattern: '^PermitRootLogin\s+yes'
+
+remediation: |
+  Disable SSH root login.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+    - systemctl restart ssh
+
+references:
+  - CIS Ubuntu Benchmark
+
+compliance:
+  - CIS 5.2.8
+
+tags:
+  - ssh
+  - root
+  - authentication

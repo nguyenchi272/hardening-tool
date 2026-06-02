@@ -10,14 +10,19 @@ class SSHCollector:
         password,
         port=22
     ):
+
         self.host = host
+
         self.username = username
+
         self.password = password
+
         self.port = port
 
         self.client = None
 
     def connect(self):
+
         self.client = paramiko.SSHClient()
 
         self.client.set_missing_host_key_policy(
@@ -25,12 +30,21 @@ class SSHCollector:
         )
 
         self.client.connect(
+
             hostname=self.host,
+
             username=self.username,
+
             password=self.password,
+
             port=self.port,
+
             timeout=10
         )
+
+    def get_client(self):
+
+        return self.client
 
     def run_command(
         self,
@@ -67,5 +81,7 @@ class SSHCollector:
         }
 
     def close(self):
+
         if self.client:
+
             self.client.close()

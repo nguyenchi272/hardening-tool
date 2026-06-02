@@ -1,0 +1,56 @@
+id: DEBIAN-SSH-002
+
+title: Ensure SSH MaxAuthTries is set to 4 or less
+
+severity: High
+
+risk_score: 8
+
+category: SSH
+
+description: >
+  SSH MaxAuthTries should limit failed authentication attempts.
+
+impact: >
+  Unlimited authentication retries increase brute-force attack risk.
+
+supported_os:
+  - debian
+
+supported_versions:
+  - "11"
+  - "12"
+
+check:
+  type: regex_not_match
+  target: sshd_config
+  pattern: '^MaxAuthTries\s+[1-4]'
+
+remediation: |
+  Configure SSH MaxAuthTries to 4 or less.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - echo 'MaxAuthTries 4' >> /etc/ssh/sshd_config
+    - systemctl restart ssh
+
+references:
+  - CIS Debian Benchmark
+
+compliance:
+  - CIS 5.2.18
+
+tags:
+  - ssh
+  - brute_force

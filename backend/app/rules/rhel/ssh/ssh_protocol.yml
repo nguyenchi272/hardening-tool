@@ -1,0 +1,59 @@
+id: RHEL-SSH-001
+
+title: Ensure SSH Protocol is set to 2
+
+severity: High
+
+risk_score: 8
+
+category: SSH
+
+description: >
+  SSH Protocol 2 should be enforced.
+
+impact: >
+  SSH Protocol 1 is insecure.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: sshd_config
+  pattern: '^Protocol\s+2'
+
+remediation: |
+  Configure SSH to use Protocol 2.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - echo 'Protocol 2' >> /etc/ssh/sshd_config
+    - systemctl restart sshd
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 5.2.1
+
+tags:
+  - ssh
+  - crypto

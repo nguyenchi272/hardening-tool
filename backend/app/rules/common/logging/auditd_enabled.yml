@@ -1,0 +1,58 @@
+id: CIS-LOG-001
+
+title: Ensure auditd is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Logging
+
+description: >
+  auditd should be enabled.
+
+impact: >
+  Missing audit logs reduce forensic capability.
+
+supported_os:
+  - rhel
+  - oracle_linux
+  - ubuntu
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: auditd
+  pattern: '^active'
+
+remediation: |
+  Enable and start auditd.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable auditd
+    - systemctl start auditd
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 4.1.1
+
+tags:
+  - logging
+  - audit

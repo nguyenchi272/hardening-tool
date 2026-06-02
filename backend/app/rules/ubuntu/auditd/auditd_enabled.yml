@@ -1,0 +1,57 @@
+id: UBUNTU-AUDIT-001
+
+title: Ensure auditd is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Logging
+
+description: >
+  auditd should be enabled for security auditing.
+
+impact: >
+  Missing audit logs reduce visibility into system activity.
+
+supported_os:
+  - ubuntu
+
+supported_versions:
+  - "20.04"
+  - "22.04"
+  - "24.04"
+
+check:
+  type: regex_not_match
+  target: auditd
+  pattern: '^active$'
+
+remediation: |
+  Enable and start auditd service.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable auditd
+    - systemctl start auditd
+
+references:
+  - CIS Ubuntu Benchmark
+
+compliance:
+  - CIS 4.1.1
+
+tags:
+  - audit
+  - logging

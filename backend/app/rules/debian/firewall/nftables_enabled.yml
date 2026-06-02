@@ -1,0 +1,56 @@
+id: DEBIAN-FW-001
+
+title: Ensure nftables firewall is enabled
+
+severity: High
+
+risk_score: 8
+
+category: Firewall
+
+description: >
+  nftables firewall should be enabled and active.
+
+impact: >
+  Systems without firewall protection are exposed to network attacks.
+
+supported_os:
+  - debian
+
+supported_versions:
+  - "11"
+  - "12"
+
+check:
+  type: regex_not_match
+  target: nftables
+  pattern: '^active$'
+
+remediation: |
+  Enable nftables firewall service.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - systemctl enable nftables
+    - systemctl start nftables
+
+references:
+  - CIS Debian Benchmark
+
+compliance:
+  - CIS 3.5.1
+
+tags:
+  - firewall
+  - nftables

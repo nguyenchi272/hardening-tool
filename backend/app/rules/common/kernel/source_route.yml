@@ -1,0 +1,59 @@
+id: CIS-KERNEL-002
+
+title: Ensure source routed packets are not accepted
+
+severity: High
+
+risk_score: 7
+
+category: Kernel
+
+description: >
+  Source routed packets should not be accepted.
+
+impact: >
+  Source routing can be abused for spoofing attacks.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: sysctl
+  pattern: '^net.ipv4.conf.all.accept_source_route\s*=\s*1'
+
+remediation: |
+  Disable source routed packets.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - sysctl -w net.ipv4.conf.all.accept_source_route=0
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 3.3.2
+
+tags:
+  - kernel
+  - networking
+  - spoofing

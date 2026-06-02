@@ -1,0 +1,58 @@
+id: RHEL-AUDIT-001
+
+title: Ensure audit package is installed
+
+severity: High
+
+risk_score: 8
+
+category: Audit
+
+description: >
+  The audit package provides userspace components for system auditing.
+
+impact: >
+  Without auditd, security events cannot be properly logged.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: installed_packages
+  pattern: '^audit-'
+
+remediation: |
+  Install audit package.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - yum install -y audit
+
+references:
+  - CIS RHEL 8 Benchmark
+
+compliance:
+  - CIS 4.1.1.1
+
+tags:
+  - audit
+  - logging

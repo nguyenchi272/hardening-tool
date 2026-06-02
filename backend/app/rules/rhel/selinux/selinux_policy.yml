@@ -1,0 +1,45 @@
+id: RHEL-SELINUX-002
+
+title: Ensure SELinux policy is targeted
+
+severity: Medium
+
+risk_score: 5
+
+category: SELinux
+
+description: >
+  SELinux policy should be set to targeted.
+
+impact: >
+  Incorrect SELinux policy may reduce system protection.
+
+supported_os:
+  - rhel
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex_not_match
+  target: os_version
+  pattern: 'SELINUXTYPE=targeted'
+
+remediation: |
+  Configure SELinux targeted policy.
+
+fix:
+
+  supported: false
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 1.6.1.2
+
+tags:
+  - selinux
+  - policy

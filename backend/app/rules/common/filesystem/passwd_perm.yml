@@ -1,0 +1,57 @@
+id: CIS-FILE-001
+
+title: Ensure permissions on /etc/passwd are configured
+
+severity: Medium
+
+risk_score: 5
+
+category: Filesystem
+
+description: >
+  The /etc/passwd file must have proper permissions.
+
+impact: >
+  Incorrect permissions may expose sensitive information.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: equals
+  target: passwd_perm
+  expected_value: "644"
+
+remediation: |
+  Set correct permissions on /etc/passwd.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - chmod 644 /etc/passwd
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 6.1.2
+
+tags:
+  - filesystem
+  - permissions

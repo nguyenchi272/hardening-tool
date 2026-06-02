@@ -1,0 +1,58 @@
+id: CIS-KERNEL-003
+
+title: Ensure ICMP redirects are disabled
+
+severity: Medium
+
+risk_score: 6
+
+category: Kernel
+
+description: >
+  ICMP redirects should be disabled.
+
+impact: >
+  ICMP redirects may allow traffic manipulation attacks.
+
+supported_os:
+  - rhel
+  - ubuntu
+  - oracle_linux
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: sysctl
+  pattern: '^net.ipv4.conf.all.accept_redirects\s*=\s*1'
+
+remediation: |
+  Disable ICMP redirects.
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+    - sysctl -w net.ipv4.conf.all.accept_redirects=0
+
+references:
+  - CIS Benchmark
+
+compliance:
+  - CIS 3.3.3
+
+tags:
+  - kernel
+  - networking

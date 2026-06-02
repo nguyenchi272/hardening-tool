@@ -1,0 +1,56 @@
+id: RHEL-FW-002
+
+title: Ensure nftables is not conflicting with firewalld
+
+severity: Medium
+
+risk_score: 5
+
+category: Firewall
+
+description: >
+  nftables and firewalld should not conflict.
+
+impact: >
+  Multiple firewall managers may cause inconsistent filtering.
+
+supported_os:
+  - rhel
+
+supported_versions:
+  - "8"
+  - "9"
+
+check:
+  type: regex
+  target: enabled_services
+  pattern: '^nftables\.service\s+enabled'
+
+remediation: |
+  Disable nftables if firewalld is used.
+
+fix:
+
+  supported: true
+
+  safe: false
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: true
+
+  commands:
+    - systemctl disable nftables
+    - systemctl stop nftables
+
+references:
+  - CIS RHEL Benchmark
+
+compliance:
+  - CIS 3.5.2
+
+tags:
+  - firewall
+  - nftables
