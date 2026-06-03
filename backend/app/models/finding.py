@@ -36,3 +36,11 @@ class Finding(BaseModel):
     host: str
 
     status: str
+
+    auto_fix_supported: bool = False
+
+    requires_restart: bool = False
+
+    requires_reboot: bool = False
+
+    manual_review: bool = False

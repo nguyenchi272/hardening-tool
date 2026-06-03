@@ -88,7 +88,19 @@ def dashboard_findings(
                 ip_address,
 
             "status":
-                finding.status
+                finding.status,
+
+            "auto_fix_supported":
+                finding.auto_fix_supported,
+
+            "requires_restart":
+                finding.requires_restart,
+
+            "requires_reboot":
+                finding.requires_reboot,
+
+            "manual_review":
+                finding.manual_review
         })
 
     return results

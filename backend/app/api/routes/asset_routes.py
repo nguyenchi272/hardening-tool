@@ -138,7 +138,19 @@ def get_asset_detail(
                     finding.remediation,
 
                 "status":
-                    finding.status
+                    finding.status,
+                
+                "auto_fix_supported":
+                    finding.auto_fix_supported,
+
+                "requires_restart":
+                    finding.requires_restart,
+
+                "requires_reboot":
+                    finding.requires_reboot,
+
+                "manual_review":
+                    finding.manual_review
             }
 
             for finding in findings

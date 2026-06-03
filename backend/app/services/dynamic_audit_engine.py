@@ -44,19 +44,6 @@ class DynamicAuditEngine:
 
                 target = \
                     rule["check"]["target"]
-                
-                print(
-                    "AVAILABLE KEYS:"
-                )
-
-                print(
-                    list(data.keys())
-                )
-
-                print(
-                    "LOOKING FOR:",
-                    target
-                )
 
                 content = \
                     data.get(
@@ -71,6 +58,7 @@ class DynamicAuditEngine:
                     )
 
                 if failed:
+                    fix = rule.get("fix", {})
 
                     findings.append(
 
@@ -120,7 +108,31 @@ class DynamicAuditEngine:
 
                             host=data["host"],
 
-                            status="Open"
+                            status="Open",
+
+                            auto_fix_supported=
+                                fix.get(
+                                    "supported",
+                                    False
+                                ),
+
+                            requires_restart=
+                                fix.get(
+                                    "requires_restart",
+                                    False
+                                ),
+
+                            requires_reboot=
+                                fix.get(
+                                    "requires_reboot",
+                                    False
+                                ),
+
+                            manual_review=
+                                fix.get(
+                                    "manual_review",
+                                    False
+                                )
                         )
                     )
 

@@ -69,8 +69,4 @@ def load_rules(
 
                 print(str(e))
 
-    print(
-        f"Loaded {len(loaded_rules)} rules"
-    )
-
     return loaded_rules

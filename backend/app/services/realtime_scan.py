@@ -107,6 +107,8 @@ class RealtimeScanService:
                 OSDetector.detect(
                     collector
                 )
+            
+            self.detected_os = os_name
 
             await self.send_progress(
                 25,
@@ -159,6 +161,8 @@ class RealtimeScanService:
             return {
 
                 "host": host,
+
+                "os": os_name,
 
                 "findings": findings,
 

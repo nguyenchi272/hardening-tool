@@ -3,28 +3,45 @@ import re
 
 def parse_os_name(os_release: str):
 
-    #
-    # PRETTY_NAME="Red Hat Enterprise Linux 9.4 (Plow)"
-    #
-    pretty_match = re.search(
-        r'PRETTY_NAME="(.+?)"',
-        os_release
-    )
+    content = os_release.lower()
 
-    if pretty_match:
 
-        return pretty_match.group(1)
+    # RHEL
+    if "red hat enterprise linux" in content:
+        return "rhel"
 
-    #
-    # NAME="Oracle Linux Server"
-    #
-    name_match = re.search(
-        r'NAME="(.+?)"',
-        os_release
-    )
 
-    if name_match:
+    # Rocky
+    if "rocky linux" in content:
+        return "rocky"
 
-        return name_match.group(1)
 
-    return "Unknown Linux"
+    # Alma
+    if "alma linux" in content:
+        return "alma"
+
+
+    # Oracle Linux
+    if (
+        "oracle linux" in content
+        or "oracle linux server" in content
+    ):
+        return "oracle_linux"
+
+
+    # Ubuntu
+    if "ubuntu" in content:
+        return "ubuntu"
+
+
+    # Debian
+    if "debian" in content:
+        return "debian"
+
+
+    # CentOS (nếu sau này thêm)
+    if "centos" in content:
+        return "centos"
+
+
+    return "unknown"

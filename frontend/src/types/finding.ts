@@ -36,4 +36,12 @@ export interface Finding {
   ip_address: string
 
   status: string
+
+  auto_fix_supported: boolean
+
+  requires_restart: boolean
+
+  requires_reboot: boolean
+
+  manual_review: boolean
 }

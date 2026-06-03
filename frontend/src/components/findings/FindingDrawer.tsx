@@ -198,6 +198,7 @@ export default function FindingDrawer({
               items={finding.references}
             />
 
+          {finding.auto_fix_supported && (
             <button
               onClick={() =>
                 setShowFix(true)
@@ -222,7 +223,7 @@ export default function FindingDrawer({
               Auto Fix Finding
 
             </button>
-
+          )}
           </div>
 
         </div>

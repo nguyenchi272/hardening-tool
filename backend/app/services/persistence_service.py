@@ -42,7 +42,7 @@ class PersistenceService:
         #
         real_os = parse_os_name(
             collected_data.get(
-                "os_version",
+                "os_release",
                 ""
             )
         )
@@ -176,7 +176,19 @@ class PersistenceService:
                         finding.remediation,
 
                     status=
-                        finding.status
+                        finding.status,
+
+                    auto_fix_supported=
+                        finding.auto_fix_supported,
+
+                    requires_restart=
+                        finding.requires_restart,
+
+                    requires_reboot=
+                        finding.requires_reboot,
+
+                    manual_review=
+                        finding.manual_review
                 )
 
             db.add(

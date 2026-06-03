@@ -1,6 +1,6 @@
 # finding.py
 from sqlalchemy \
-    import Column
+    import Boolean, Column
 from sqlalchemy.orm \
     import relationship
 from sqlalchemy \
@@ -45,3 +45,23 @@ class FindingRecord(Base):
     remediation = Column(Text)
 
     status = Column(String)
+
+    auto_fix_supported = Column(
+        Boolean,
+        default=False
+    )
+
+    requires_restart = Column(
+        Boolean,
+        default=False
+    )
+
+    requires_reboot = Column(
+        Boolean,
+        default=False
+    )
+
+    manual_review = Column(
+        Boolean,
+        default=False
+    )

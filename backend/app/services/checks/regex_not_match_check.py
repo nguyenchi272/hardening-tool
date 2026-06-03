@@ -8,30 +8,10 @@ def run(
     pattern = \
         rule["check"]["pattern"]
 
-    print(
-        "RULE =",
-        rule["id"]
-    )
-
-    print(
-        "PATTERN =",
-        repr(pattern)
-    )
-
-    print(
-        "CONTENT =",
-        repr(content)
-    )
-
     matched = re.search(
         pattern,
         content,
         re.MULTILINE
-    )
-
-    print(
-        "MATCHED =",
-        matched
     )
 
     if not matched:
