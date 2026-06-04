@@ -1,0 +1,76 @@
+id: CIS-SSH-004
+
+title: Ensure SSH Protocol is set to 2
+
+severity: High
+
+risk_score: 8
+
+category: SSH
+
+description: >
+  SSH protocol 2 should be enforced.
+
+impact: >
+  SSH protocol 1 is insecure.
+
+supported_os:
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+  - ubuntu
+  - debian
+
+supported_versions:
+  - "7"
+  - "8"
+  - "9"
+  - "20.04"
+  - "22.04"
+
+
+check:
+
+  type: regex_not_match
+
+  target: sshd_config
+
+  pattern: '^Protocol\s+2'
+
+
+remediation: |
+  Configure SSH Protocol 2.
+
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+
+  commands:
+
+    - echo "Protocol 2" >> /etc/ssh/sshd_config
+    - systemctl restart sshd
+
+
+references:
+  - CIS SSH Benchmark
+
+
+compliance:
+  - CIS 5.2.1
+
+
+tags:
+
+  - ssh
+  - crypto

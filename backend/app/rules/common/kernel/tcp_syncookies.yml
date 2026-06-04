@@ -1,0 +1,84 @@
+id: CIS-KERNEL-004
+
+title: Ensure TCP SYN Cookies is enabled
+
+severity: Medium
+
+risk_score: 6
+
+category: Kernel
+
+
+description: >
+  TCP SYN cookies protect against SYN flood attacks.
+
+
+impact: >
+  Disabled SYN cookies may allow denial of service.
+
+
+supported_os:
+
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+  - ubuntu
+  - debian
+
+
+supported_versions:
+
+  - "7"
+  - "8"
+  - "9"
+
+
+check:
+
+  type: regex_not_match
+
+  target: tcp_syncookies
+
+  pattern: "^1$"
+
+
+remediation: |
+  Enable TCP SYN cookies.
+
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+
+  type: sysctl
+
+  key: net.ipv4.tcp_syncookies
+
+  value: 1
+
+
+references:
+
+  - CIS Linux Benchmark
+
+
+compliance:
+
+  - CIS 3.2.1
+
+
+tags:
+
+  - kernel
+  - sysctl
+  - network

@@ -1,0 +1,82 @@
+id: CIS-SSH-005
+
+title: Disable SSH X11 forwarding
+
+severity: Medium
+
+risk_score: 5
+
+category: SSH
+
+
+description: >
+  X11 forwarding should be disabled.
+
+
+impact: >
+  Reduces attack surface.
+
+
+supported_os:
+
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+  - ubuntu
+  - debian
+
+
+supported_versions:
+
+  - "7"
+  - "8"
+  - "9"
+
+
+check:
+
+  type: regex_not_match
+
+  target: sshd_config
+
+  pattern: '^X11Forwarding\s+no'
+
+
+remediation: |
+  Disable X11 forwarding.
+
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: true
+
+  requires_reboot: false
+
+  manual_review: false
+
+
+  commands:
+
+    - echo "X11Forwarding no" >> /etc/ssh/sshd_config
+    - systemctl restart sshd
+
+
+references:
+
+  - CIS SSH Benchmark
+
+
+compliance:
+
+  - CIS 5.2.6
+
+
+tags:
+
+  - ssh
+  - forwarding

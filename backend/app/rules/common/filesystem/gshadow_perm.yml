@@ -1,0 +1,78 @@
+id: CIS-FILE-003
+
+title: Ensure permissions on /etc/gshadow are configured
+
+severity: High
+
+risk_score: 8
+
+category: Filesystem
+
+
+description: >
+  Group shadow file must be protected.
+
+
+impact: >
+  Improper access may expose group password hashes.
+
+
+supported_os:
+
+  - rhel
+  - rocky
+  - alma
+  - oracle_linux
+  - ubuntu
+  - debian
+
+
+supported_versions:
+
+  - "7"
+  - "8"
+  - "9"
+
+
+check:
+  type: equals
+  target: gshadow_perm
+  expected_value: "0"
+
+
+remediation: |
+  Restrict permissions.
+
+
+fix:
+
+  supported: true
+
+  safe: true
+
+  requires_restart: false
+
+  requires_reboot: false
+
+  manual_review: false
+
+  commands:
+
+    - chmod 000 /etc/gshadow
+    - chown root:root /etc/gshadow
+
+
+references:
+
+  - CIS Linux Benchmark
+
+
+compliance:
+
+  - CIS 6.1.4
+
+
+tags:
+
+  - filesystem
+  - permissions
